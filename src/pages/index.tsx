@@ -8,7 +8,7 @@ import Table from '@/components/Table';
 import { columns } from '@/helpers/columns';
 import { ChartData, Charts } from '@/interfaces/chart';
 import { Download } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
+import { IconButton, TextField } from '@mui/material';
 import { purple } from 'tailwindcss/colors';
 
 export default function Home() {
@@ -43,9 +43,12 @@ export default function Home() {
       </Head>
       <main className="flex flex-col items-center justify-between gap-10">
         <div className="flex gap-5">
-          <input
+          <TextField
             type="date"
-            className="text-5xl p-6 rounded-lg border border-purple-500 bg-transparent disabled:opacity-60 select-none"
+            inputProps={{
+              className:
+                'text-5xl p-6 rounded-lg border border-purple-500 bg-transparent disabled:opacity-60 select-none',
+            }}
             onChange={e => setDate(e.target.value)}
             disabled={fetchStatus === 'fetching'}
           />
@@ -53,7 +56,9 @@ export default function Home() {
             className="text-3xl"
             color="primary"
             onClick={getData}
-            disabled={fetchStatus === 'fetching' || date === ''}
+            disabled={
+              fetchStatus === 'fetching' || date === '' || date === undefined
+            }
           >
             <Download fontSize="large" />
           </IconButton>
@@ -64,7 +69,11 @@ export default function Home() {
             loading={fetchStatus === 'fetching'}
           />
           {status === 'success' && fetchStatus === 'idle' && (
-            <Table<ChartData> data={data} columns={columns} additionalProperties={{ date }} />
+            <Table<ChartData>
+              data={data}
+              columns={columns}
+              additionalProperties={{ date }}
+            />
           )}
         </div>
       </main>

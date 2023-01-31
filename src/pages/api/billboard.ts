@@ -1,5 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { Charts } from '@/interfaces/chart';
+import chrome from 'chrome-aws-lambda';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import puppeteer from 'puppeteer';
 
@@ -12,8 +13,17 @@ export default async function handler(
   if (!date) {
     return res.status(400).json({ data: [], date: '' });
   }
-  
-  const browser = await puppeteer.launch();
+
+  const options =
+    process.env.NODE_ENV === 'production'
+      ? {
+          args: chrome.args,
+          executablePath: await chrome.executablePath,
+          headless: chrome.headless,
+        }
+      : {};
+
+  const browser = await puppeteer.launch(options);
   const page = await browser.newPage();
 
   page.setDefaultNavigationTimeout(0);

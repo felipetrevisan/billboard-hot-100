@@ -79,6 +79,7 @@ export default function Table<T>({
         maxHeight: '600px',
         height: '600px',
         borderRadius: '10px',
+        miWwidth: '45vw'
       }}
       ref={tableRef}
     >
@@ -88,6 +89,7 @@ export default function Table<T>({
           aria-label="copy to clipboard"
           color="inherit"
           onClick={selectAllContent}
+          disabled={!data.length}
         >
           <ContentCopy />
         </IconButton>
@@ -97,7 +99,7 @@ export default function Table<T>({
           edge="end"
           color="inherit"
           onClick={exportData}
-          disabled={exporting}
+          disabled={exporting || !data.length}
         >
           <CloudDownload />
         </IconButton>
