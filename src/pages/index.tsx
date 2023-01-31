@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import Head from 'next/head';
 import { useState } from 'react';
 import { ScaleLoader } from 'react-spinners';
 
 import Table from '@/components/Table';
+import { api } from '@/config/http/axios';
 import { columns } from '@/helpers/columns';
 import { ChartData, Charts } from '@/interfaces/chart';
 import { Download } from '@mui/icons-material';
@@ -22,8 +22,8 @@ export default function Home() {
   });
 
   const queryBillboard = (date: string | undefined) => {
-    return axios
-      .get<Charts>('api/billboard', { params: { date } })
+    return api
+      .get<Charts>('/', { params: { date } })
       .then(res => {
         setShouldExport(false);
         return res.data.data;
